@@ -77,28 +77,33 @@ const Dashboard = () => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Title</TableCell>
-                  <TableCell>Image</TableCell>
-                  <TableCell>Author</TableCell>
-                  <TableCell>Country</TableCell>
-                  <TableCell>Language</TableCell>
-                  <TableCell>Link</TableCell>
-                  <TableCell>Year</TableCell>
-                  <TableCell>Pages</TableCell>
+                  <TableCell align="center">Title</TableCell>
+                  <TableCell align="center">Image</TableCell>
+                  <TableCell align="center">Author</TableCell>
+                  <TableCell align="center">Country</TableCell>
+                  <TableCell align="center">Language</TableCell>
+                  <TableCell align="center">Link</TableCell>
+                  <TableCell align="center">Year</TableCell>
+                  <TableCell align="center">Pages</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
                   <TableRow key={index}>
-                    <TableCell>{row.title}</TableCell>
-                    <TableCell><img style={{borderRadius:"10px" , width:"100px", height:"100px"}} src={row.imageLink} alt="" /></TableCell>
-                    <TableCell>{row.author}</TableCell>
-                    <TableCell>{row.country}</TableCell>
-                    <TableCell>{row.language}</TableCell>
-                    <TableCell>  <a href={row.link} target="_blank" >{row.link}</a></TableCell>
-                    <TableCell>{row.year}</TableCell>
-                    <TableCell>{row.pages}</TableCell>
-
+                    <TableCell align="center">{row.title}</TableCell>
+                    <TableCell align="center">
+                      <img style={{ borderRadius: "10px", width: "100px", height: "100px" }} src={row.imageLink} alt="" />
+                    </TableCell>
+                    <TableCell align="center">{row.author}</TableCell>
+                    <TableCell align="center">{row.country}</TableCell>
+                    <TableCell align="center">{row.language}</TableCell>
+                    <TableCell align="center">
+                      <a href={row.link} style={{ color: 'blue', textDecoration: 'none' }}>
+                        {row.link}
+                      </a>
+                    </TableCell>
+                    <TableCell align="center">{row.year}</TableCell>
+                    <TableCell align="center">{row.pages}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

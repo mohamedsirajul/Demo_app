@@ -11,8 +11,15 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { ToastContainer, toast } from 'react-toastify';
 import Link from "@mui/material/Link";
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import 'react-toastify/dist/ReactToastify.css';
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
 const defaultTheme = createTheme();
 
@@ -20,6 +27,7 @@ export default function Signin() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -62,19 +70,18 @@ export default function Signin() {
       if (response.ok) {
         const token = data.token;
 
-        localStorage.setItem("token",token)
+        localStorage.setItem("token", token);
 
         // Decode the JWT token
         const decodedData = jwtDecode(token);
         // console.log('Decoded Token Data:', decodedData);
 
-        localStorage.setItem("user_id", decodedData.user_id )
-        localStorage.setItem("user_name",decodedData.user_name)
-        localStorage.setItem("exp",decodedData.exp)
+        localStorage.setItem("user_id", decodedData.user_id);
+        localStorage.setItem("user_name", decodedData.user_name);
+        localStorage.setItem("exp", decodedData.exp);
         toast.success('Sign-in successful!');
 
-        window.location.href = "/dashboard"
-
+        window.location.href = "/dashboard";
       } else {
         if (response.status === 401) {
           toast.error(data.message);
@@ -88,6 +95,14 @@ export default function Signin() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
   };
 
   const validateEmail = (email) => {
@@ -140,21 +155,32 @@ export default function Signin() {
               helperText={errors.email}
               disabled={loading}
             />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              value={formData.password}
-              onChange={handleChange}
-              error={!!errors.password}
-              helperText={errors.password}
-              disabled={loading}
-            />
+            <FormControl variant="outlined" fullWidth>
+              <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+              <OutlinedInput
+                id="outlined-adornment-password"
+                name="password"
+                type={showPassword ? 'text' : 'password'}
+                value={formData.password}
+                onChange={handleChange}
+                error={!!errors.password}
+                disabled={loading}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                label="Password"
+              />
+              {errors.password && <Typography color="error" variant="body2">{errors.password}</Typography>}
+            </FormControl>
             <Button
               type="submit"
               fullWidth
